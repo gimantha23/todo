@@ -7,11 +7,11 @@ const Form = ({ setInputText, todos, setTodos, inputText, setStatus }) => {
   };
 
   const submitTodoHandler = (e) => {
-    e.preventDefault();
-    console.log(inputText);
-    
+    e.preventDefault(); 
     if(inputText === ""){
       alert('Cannot add Empty Strings');
+    }else if(todos.length +1 > 5){
+      alert('Cannot add more than 5 items');
     }
     else{
       setTodos([
