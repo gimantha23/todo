@@ -49,7 +49,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Gima's Todo List</h1>
+        <h1>Gima's Todo List - Netlify</h1>
       </header>
       <Form
         inputText={inputText}
