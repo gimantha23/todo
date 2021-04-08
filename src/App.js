@@ -23,15 +23,16 @@ function App() {
         break;
     }
   };
-  useEffect(() => {
-    filterHandler();
-    saveLocalTodos();
-  }, [todos, status]);
 
   //runs once app starts
   useEffect(() => {
     getLocalTodos();
   }, []);
+
+  useEffect(() => {
+    filterHandler();
+    saveLocalTodos();
+  }, [todos, status]);
 
   const saveLocalTodos = () => {
     localStorage.setItem("todos", JSON.stringify(todos));
