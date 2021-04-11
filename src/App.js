@@ -23,6 +23,7 @@ function App() {
         break;
     }
   };
+  console.log(todos,"AAAAAAAA");
 
   //runs once app starts
   useEffect(() => {
@@ -43,7 +44,17 @@ function App() {
       localStorage.setItem("todos", JSON.stringify([]));
     } else {
       let todoLocal = JSON.parse(localStorage.getItem("todos"));
-      setTodos(todoLocal);
+
+      const newList = todoLocal &&
+      todoLocal.map((ftodo)=>{
+        const updateddata= {
+          ...ftodo,
+          completed :!ftodo.completed
+        }
+        return updateddata;
+      })
+      
+      setTodos(newList);
     }
   };
 
