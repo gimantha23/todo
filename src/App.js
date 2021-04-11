@@ -9,6 +9,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [status, setStatus] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [uploadingStatus, setUploadingStatus] = useState(false);
 
   const filterHandler = () => {
     switch (status) {
@@ -23,7 +24,6 @@ function App() {
         break;
     }
   };
-  console.log(todos,"AAAAAAAA");
 
   //runs once app starts
   useEffect(() => {
@@ -45,15 +45,16 @@ function App() {
     } else {
       let todoLocal = JSON.parse(localStorage.getItem("todos"));
 
-      const newList = todoLocal &&
-      todoLocal.map((ftodo)=>{
-        const updateddata= {
-          ...ftodo,
-          completed :!ftodo.completed
-        }
-        return updateddata;
-      })
-      
+      const newList =
+        todoLocal &&
+        todoLocal.map((todo) => {
+          const updateddata = {
+            ...todo,
+            completed: !todo.completed,
+          };
+          return updateddata;
+        });
+
       setTodos(newList);
     }
   };
@@ -69,6 +70,8 @@ function App() {
         setTodos={setTodos}
         setInputText={setInputText}
         setStatus={setStatus}
+        setUploadingStatus={setUploadingStatus}
+        uploadingStatus={uploadingStatus}
       />
       <TodoList
         setTodos={setTodos}

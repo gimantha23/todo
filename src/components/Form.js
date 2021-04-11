@@ -1,30 +1,41 @@
 import React from "react";
 
-const Form = ({ setInputText, todos, setTodos, inputText, setStatus }) => {
+const Form = ({
+  setInputText,
+  todos,
+  setTodos,
+  inputText,
+  setStatus,
+  setUploadingStatus,
+  uploadingStatus,
+}) => {
   //write js code and function
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
 
   const submitTodoHandler = (e) => {
-    e.preventDefault(); 
-    if(inputText === ""){
-      alert('Cannot add Empty Strings');
-    }else if(todos.length +1 > 5){
-      alert('Cannot add more than 5 items');
-    }
-    else{
-      setTodos([
-        ...todos,
-        { text: inputText, completed: false, id: Math.random() * 1000 },
-      ]);
-      setInputText("");
+    setUploadingStatus(true);
+    e.preventDefault();
+    if (inputText === "") {
+      alert("Cannot add Empty Strings");
+    } else if (todos.length + 1 > 5) {
+      alert("Cannot add more than 5 items");
+    } else {
+      setTimeout(() => {
+        setUploadingStatus(false);
+          setTodos([
+            ...todos,
+            { text: inputText, completed: false, id: Math.random() * 1000 },
+          ]);
+        setInputText("");
+      }, 2000);
     }
   };
 
-  const statusHandler = (e) =>{
+  const statusHandler = (e) => {
     setStatus(e.target.value);
-  }
+  };
 
   return (
     <form>
@@ -44,6 +55,7 @@ const Form = ({ setInputText, todos, setTodos, inputText, setStatus }) => {
           <option value="uncompleted">Uncompleted</option>
         </select>
       </div>
+      {uploadingStatus && <p>In progress...</p>}
     </form>
   );
 };
