@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 const Form = ({
   setInputText,
@@ -14,7 +14,21 @@ const Form = ({
     setInputText(e.target.value);
   };
 
-  const submitTodoHandler = (e) => {
+  // useEffect(
+  //   () => {
+  //     let timer1 = setTimeout(() => submitTodoHandler(), 4000);
+
+  //     // this will clear Timeout
+  //     // when component unmount like in willComponentUnmount
+  //     // and show will not change to true
+  //     return () => {
+  //       clearTimeout(timer1);
+  //     };
+  //   },
+  //   []
+  // );
+
+   const submitTodoHandler = (e) => {
     setUploadingStatus(true);
     e.preventDefault();
     if (inputText === "") {
@@ -22,14 +36,25 @@ const Form = ({
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         setUploadingStatus(false);
-          setTodos([
-            ...todos,
-            { text: inputText, completed: false, id: Math.random() * 1000 },
-          ]);
+
+        setTodos((prevTodos) => {
+          if (!uploadingStatus) {
+            return [...prevTodos];
+            
+          } else {
+            clearTimeout(timeout);
+            const newTodoState = {
+              text: inputText,
+              completed: false,
+              id: Math.random() * 1000,
+            };
+            return [newTodoState, ...prevTodos];
+          }
+        });
         setInputText("");
-      }, 2000);
+      }, 4000);
     }
   };
 
