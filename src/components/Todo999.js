@@ -1,13 +1,37 @@
 import React from "react";
 
-const Todo = ({ text, todo, todos, setTodos, deletingStatus, setDeletingStatus,}) => {
+var deltimer;
+let delqueue = 0;
+
+const Todo = ({
+  text,
+  todo,
+  todos,
+  setTodos,
+  deletingStatus,
+  setDeletingStatus,
+}) => {
+
+  deltimer = () =>
+  setTimeout((deltimer) => {
+      
+    console.log(todo.id, "td id");
+    if (delqueue > 1) {
+      delqueue--;
+      return;
+    }
+    setDeletingStatus(false);
+    delqueue=0;
+    setTodos(todos.filter((el) => el.id !== todo.id));
+  }, 500);
+
   //Events
   const deleteHandler = () => {
+    delqueue++;
     setDeletingStatus(true);
-    setTimeout((deltimer) => {
-        setDeletingStatus(false);
-      setTodos(todos.filter((el) => el.id !== todo.id));
-    }, 2500);
+    clearTimeout(deltimer);
+    deltimer();
+
   };
 
   const completeHandler = () => {

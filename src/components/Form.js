@@ -23,7 +23,6 @@ const Form = ({
         queue--;
         return;
       }
-      // setTimeout((timer) => {}, 2500);
       setUploadingStatus(false);
       setInputText("");
 
@@ -36,7 +35,7 @@ const Form = ({
         queue = 0;
         return [newTodoState, ...prevTodos];
       });
-    }, 2500);
+    }, 500);
 
   const submitTodoHandler = (e) => {
     e.preventDefault();
