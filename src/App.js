@@ -10,6 +10,7 @@ function App() {
   const [status, setStatus] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [uploadingStatus, setUploadingStatus] = useState(false);
+  const [deletingStatus, setDeletingStatus] = useState(false);
 
   const filterHandler = () => {
     switch (status) {
@@ -77,6 +78,8 @@ function App() {
         setTodos={setTodos}
         todos={todos}
         filteredTodos={filteredTodos}
+        deletingStatus={deletingStatus}
+        setDeletingStatus={setDeletingStatus}
       />
     </div>
   );

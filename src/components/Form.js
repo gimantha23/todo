@@ -1,4 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
+
+var timer;
+let queue = 0;
 
 const Form = ({
   setInputText,
@@ -9,52 +12,42 @@ const Form = ({
   setUploadingStatus,
   uploadingStatus,
 }) => {
-  //write js code and function
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
 
-  // useEffect(
-  //   () => {
-  //     let timer1 = setTimeout(() => submitTodoHandler(), 4000);
+  timer = () =>
+    setTimeout((timer) => {
+      setUploadingStatus(false);
+      setInputText("");
 
-  //     // this will clear Timeout
-  //     // when component unmount like in willComponentUnmount
-  //     // and show will not change to true
-  //     return () => {
-  //       clearTimeout(timer1);
-  //     };
-  //   },
-  //   []
-  // );
+      if (queue > 1) {
+        queue--;
+        return;
+      }
 
-   const submitTodoHandler = (e) => {
-    setUploadingStatus(true);
+      setTodos((prevTodos) => {
+        const newTodoState = {
+          text: inputText,
+          completed: false,
+          id: Math.random() * 1000,
+        };
+        queue = 0;
+        return [newTodoState, ...prevTodos];
+      });
+    }, 2500);
+
+  const submitTodoHandler = (e) => {
     e.preventDefault();
     if (inputText === "") {
       alert("Cannot add Empty Strings");
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      const timeout = setTimeout(() => {
-        setUploadingStatus(false);
-
-        setTodos((prevTodos) => {
-          if (!uploadingStatus) {
-            return [...prevTodos];
-            
-          } else {
-            clearTimeout(timeout);
-            const newTodoState = {
-              text: inputText,
-              completed: false,
-              id: Math.random() * 1000,
-            };
-            return [newTodoState, ...prevTodos];
-          }
-        });
-        setInputText("");
-      }, 4000);
+      queue++;
+      setUploadingStatus(true);
+      clearTimeout(timer);
+      timer();
     }
   };
 

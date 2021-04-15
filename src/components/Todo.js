@@ -1,9 +1,29 @@
 import React from "react";
 
-const Todo = ({ text, todo, todos, setTodos }) => {
+let queue = 0;
+
+const Todo = ({
+  text,
+  todo,
+  todos,
+  setTodos,
+  deletingStatus,
+  setDeletingStatus,
+}) => {
   //Events
   const deleteHandler = () => {
-    setTodos(todos.filter((el) => el.id !== todo.id));
+    queue++;
+    setDeletingStatus(true);
+
+    setTimeout((timer) => {
+      setDeletingStatus(false);
+
+      if (queue > 1) {
+        queue--;
+        return;
+      }
+      setTodos(todos.filter((el) => el.id !== todo.id));
+    }, 2500);
   };
 
   const completeHandler = () => {
