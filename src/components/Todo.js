@@ -1,6 +1,6 @@
 import React from "react";
 
-let queue = 0;
+let delqueue = 0;
 
 const Todo = ({
   text,
@@ -12,14 +12,14 @@ const Todo = ({
 }) => {
   //Events
   const deleteHandler = () => {
-    queue++;
+    delqueue++;
     setDeletingStatus(true);
 
     setTimeout((timer) => {
       setDeletingStatus(false);
 
-      if (queue > 1) {
-        queue--;
+      if (delqueue > 1) {
+        delqueue--;
         return;
       }
       setTodos(todos.filter((el) => el.id !== todo.id));

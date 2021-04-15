@@ -18,13 +18,14 @@ const Form = ({
 
   timer = () =>
     setTimeout((timer) => {
-      setUploadingStatus(false);
-      setInputText("");
-
+      
       if (queue > 1) {
         queue--;
         return;
       }
+      // setTimeout((timer) => {}, 2500);
+      setUploadingStatus(false);
+      setInputText("");
 
       setTodos((prevTodos) => {
         const newTodoState = {
