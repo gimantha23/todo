@@ -35,7 +35,7 @@ const Form = ({
         queue = 0;
         return [newTodoState, ...prevTodos];
       });
-    }, 500);
+    }, 2500);
 
   const submitTodoHandler = (e) => {
     e.preventDefault();
