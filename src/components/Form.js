@@ -1,41 +1,11 @@
-import React from "react";
+import React, {useRef} from "react";
 
-var timer;
-let queue = 0;
-
-const Form = ({
-  setInputText,
-  todos,
-  setTodos,
-  inputText,
-  setStatus,
-  setUploadingStatus,
-  uploadingStatus,
-}) => {
+const Form = ({setInputText,todos,setTodos,inputText,setStatus,setUploadingStatus,uploadingStatus}) => {
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
 
-  timer = () =>
-    setTimeout((timer) => {
-      
-      if (queue > 1) {
-        queue--;
-        return;
-      }
-      setUploadingStatus(false);
-      setInputText("");
-
-      setTodos((prevTodos) => {
-        const newTodoState = {
-          text: inputText,
-          completed: false,
-          id: Math.random() * 1000,
-        };
-        queue = 0;
-        return [newTodoState, ...prevTodos];
-      });
-    }, 2500);
+  var timerIdRef = useRef(0);
 
   const submitTodoHandler = (e) => {
     e.preventDefault();
@@ -44,10 +14,22 @@ const Form = ({
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      queue++;
       setUploadingStatus(true);
-      clearTimeout(timer);
-      timer();
+      clearTimeout(timerIdRef.current);
+
+      timerIdRef.current = setTimeout(() => {
+        setUploadingStatus(false);
+        setInputText("");
+  
+        setTodos((prevTodos) => {
+          const newTodoState = {
+            text: inputText,
+            completed: false,
+            id: Math.random() * 1000,
+          };
+          return [newTodoState, ...prevTodos];
+        });
+      }, 2500);
     }
   };
 
