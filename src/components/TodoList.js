@@ -9,36 +9,47 @@ const TodoList = ({
   deletingStatus,
   setDeletingStatus,
 }) => {
-  
   var deleteTimerIdRef = useRef(0);
 
+  // const onDeleteHandler = (deletedTodoID) => {
+  //   setDeletingStatus(true);
+  //   clearTimeout(deleteTimerIdRef.current);
+  //   deleteTimerIdRef.current = setTimeout(() => {
+  //     setDeletingStatus(false);
+  //     delete todos[deletedTodoID];
+  //     setTodos({
+  //       ...todos
+  //     });
+  //   }, 1000);
+  // };
+
+    let count = 1;
   const onDeleteHandler = (deletedTodoID) => {
+    count=count+1;
+    console.log(count)
     setDeletingStatus(true);
     clearTimeout(deleteTimerIdRef.current);
     deleteTimerIdRef.current = setTimeout(() => {
       setDeletingStatus(false);
-      setTodos(todos.filter((el) => el.id !== deletedTodoID));
-    }, 4500);
-  };
 
+      const { [deletedTodoID]: remove, ...rest } = todos;
+      setTodos(rest);
+    }, 1000);
+  };
   const onCompleteHandler = (completedTodoID) => {
-    setTodos(
-      todos.map((item) => {
-        if (item.id === completedTodoID) {
-          return {
-            ...item,
-            completed: !item.completed,
-          };
-        }
-        return item;
-      })
-    );
+    setTodos((prevState) => ({
+      ...prevState,
+      [completedTodoID]: {
+        ...todos[completedTodoID],
+        completed: !todos[completedTodoID]["completed"],
+      },
+    }));
   };
 
   return (
     <div className="todo-container">
       <ul className="todo-list">
-        {filteredTodos.map((todo) => (
+        {Object.values(todos).map((todo) => (
           <Todo
             setTodos={setTodos}
             key={todo.id}
@@ -52,8 +63,10 @@ const TodoList = ({
 
         {deletingStatus && <p>Deleting In progress...</p>}
         <p>
-          <b>Total items: {todos.length}</b>
+          <b>Total items: {Object.keys(todos).length}</b>
+          <br/>
         </p>
+          <b>Count: {count}</b>
       </ul>
     </div>
   );

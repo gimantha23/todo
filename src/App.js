@@ -6,16 +6,17 @@ import TodoList from "./components/TodoList";
 
 function App() {
   const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState({});
   const [status, setStatus] = useState("all");
-  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [filteredTodos, setFilteredTodos] = useState({});
   const [uploadingStatus, setUploadingStatus] = useState(false);
   const [deletingStatus, setDeletingStatus] = useState(false);
 
   const filterHandler = () => {
     switch (status) {
       case "completed":
-        setFilteredTodos(todos.filter((todo) => todo.completed === true));
+        // setFilteredTodos(todos.filter((todo) => todo.completed === true));
+        setFilteredTodos(Object.values(todos).completed===true)
         break;
       case "uncompleted":
         setFilteredTodos(todos.filter((todo) => todo.completed === false));
@@ -32,7 +33,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    filterHandler();
+    // filterHandler();
     saveLocalTodos();
   }, [todos, status]);
 
@@ -42,18 +43,18 @@ function App() {
 
   const getLocalTodos = () => {
     if (localStorage.getItem("todos") === null) {
-      localStorage.setItem("todos", JSON.stringify([]));
+      localStorage.setItem("todos", JSON.stringify({}));
     } else {
       let todoLocal = JSON.parse(localStorage.getItem("todos"));
 
       const newList =
         todoLocal &&
-        todoLocal.map((todo) => {
+        Object.values(todoLocal).map((todo) => {
           const updateddata = {
             ...todo,
             completed: !todo.completed,
           };
-          return updateddata;
+          return {...updateddata};
         });
 
       setTodos(newList);

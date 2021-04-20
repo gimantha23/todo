@@ -1,10 +1,17 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 
-const Form = ({setInputText,todos,setTodos,inputText,setStatus,setUploadingStatus,uploadingStatus}) => {
+const Form = ({
+  setInputText,
+  todos,
+  setTodos,
+  inputText,
+  setStatus,
+  setUploadingStatus,
+  uploadingStatus,
+}) => {
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
-
   var timerIdRef = useRef(0);
 
   const submitTodoHandler = (e) => {
@@ -16,20 +23,23 @@ const Form = ({setInputText,todos,setTodos,inputText,setStatus,setUploadingStatu
     } else {
       setUploadingStatus(true);
       clearTimeout(timerIdRef.current);
-
       timerIdRef.current = setTimeout(() => {
         setUploadingStatus(false);
         setInputText("");
-  
+
         setTodos((prevTodos) => {
-          const newTodoState = {
+          const newTodo = {
             text: inputText,
             completed: false,
-            id: Math.random() * 1000,
+            id: Math.random()*1000,
           };
-          return [newTodoState, ...prevTodos];
+          return {
+            ...prevTodos,
+            [newTodo.id]:newTodo
+          }
         });
-      }, 2500);
+
+      }, 1000);
     }
   };
 
