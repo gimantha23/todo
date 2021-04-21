@@ -1,88 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "./App.css";
 
-import Form from "./components/Form";
-import TodoList from "./components/TodoList";
+import About from "./components/About";
+import Home from "./components/Home";
+import {TodoContextProvider} from "./components/TodoContext";
 
 function App() {
-  const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState({});
-  const [status, setStatus] = useState("all");
-  const [filteredTodos, setFilteredTodos] = useState({});
-  const [uploadingStatus, setUploadingStatus] = useState(false);
-  const [deletingStatus, setDeletingStatus] = useState(false);
+  let routes;
 
-  const filterHandler = () => {
-    switch (status) {
-      case "completed":
-        // setFilteredTodos(todos.filter((todo) => todo.completed === true));
-        setFilteredTodos(Object.values(todos).completed===true)
-        break;
-      case "uncompleted":
-        setFilteredTodos(todos.filter((todo) => todo.completed === false));
-        break;
-      default:
-        setFilteredTodos(todos);
-        break;
-    }
-  };
-
-  //runs once app starts
-  useEffect(() => {
-    getLocalTodos();
-  }, []);
-
-  useEffect(() => {
-    // filterHandler();
-    saveLocalTodos();
-  }, [todos, status]);
-
-  const saveLocalTodos = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-
-  const getLocalTodos = () => {
-    if (localStorage.getItem("todos") === null) {
-      localStorage.setItem("todos", JSON.stringify({}));
-    } else {
-      let todoLocal = JSON.parse(localStorage.getItem("todos"));
-
-      const newList =
-        todoLocal &&
-        Object.values(todoLocal).map((todo) => {
-          const updateddata = {
-            ...todo,
-            completed: !todo.completed,
-          };
-          return {...updateddata};
-        });
-
-      setTodos(newList);
-    }
-  };
+  routes = (
+    <Switch>
+      <Route path="/todo">
+        <Home />
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      <Redirect to="/todo" />
+    </Switch>
+  );
 
   return (
-    <div className="App">
-      <header>
-        <h1>Gima's Todo List - Netlify</h1>
-      </header>
-      <Form
-        inputText={inputText}
-        todos={todos}
-        setTodos={setTodos}
-        setInputText={setInputText}
-        setStatus={setStatus}
-        setUploadingStatus={setUploadingStatus}
-        uploadingStatus={uploadingStatus}
-      />
-      <TodoList
-        setTodos={setTodos}
-        todos={todos}
-        filteredTodos={filteredTodos}
-        deletingStatus={deletingStatus}
-        setDeletingStatus={setDeletingStatus}
-      />
-    </div>
+    <Router>
+      <TodoContextProvider>{routes}</TodoContextProvider>
+    </Router>
   );
 }
 

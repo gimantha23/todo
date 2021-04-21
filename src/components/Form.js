@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
+import { TodoContext } from "./TodoContext";
 
 const Form = ({
   setInputText,
-  todos,
-  setTodos,
+  // todos,
+  // setTodos,
   inputText,
   setStatus,
   setUploadingStatus,
   uploadingStatus,
 }) => {
+  //define context
+  const { todos, setTodos } = useContext(TodoContext);
+
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
@@ -31,14 +35,13 @@ const Form = ({
           const newTodo = {
             text: inputText,
             completed: false,
-            id: Math.random()*1000,
+            id: Math.random() * 1000,
           };
           return {
             ...prevTodos,
-            [newTodo.id]:newTodo
-          }
+            [newTodo.id]: newTodo,
+          };
         });
-
       }, 1000);
     }
   };

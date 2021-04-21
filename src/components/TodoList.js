@@ -23,10 +23,7 @@ const TodoList = ({
   //   }, 1000);
   // };
 
-    let count = 1;
   const onDeleteHandler = (deletedTodoID) => {
-    count=count+1;
-    console.log(count)
     setDeletingStatus(true);
     clearTimeout(deleteTimerIdRef.current);
     deleteTimerIdRef.current = setTimeout(() => {
@@ -66,7 +63,6 @@ const TodoList = ({
           <b>Total items: {Object.keys(todos).length}</b>
           <br/>
         </p>
-          <b>Count: {count}</b>
       </ul>
     </div>
   );
