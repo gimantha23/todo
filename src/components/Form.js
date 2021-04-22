@@ -10,8 +10,9 @@ const Form = ({
   setUploadingStatus,
   uploadingStatus,
 }) => {
-  //define context
+  //context
   const { todos, setTodos } = useContext(TodoContext);
+  
 
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
