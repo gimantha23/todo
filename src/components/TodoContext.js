@@ -2,62 +2,89 @@ import { createContext, useReducer } from "react";
 
 const TodoContext = createContext();
 
-const todoReducer = (currentTodos, action) => {
+const todoReducer = (state, action) => {
   switch (action.type) {
-    case "submit-todos":
-      return { ...currentTodos, [action.newtodo.id]: action.newtodo };
-
-    case "delete-todos":
-      console.log(action.id);
-      const { [action.id]: remove, ...rest } = action.todo;
-      return rest;
-
-    case "complete-todos":
+    case "toggle-status":
+      return { ...state, selectedStatus: action.payload };
+    case "text-input":
       return {
-        ...currentTodos,
-        [action.id]: {
-          ...action.todo[action.id],
-          completed: !action.todo[action.id]["completed"],
+        ...state,
+        inputText: action.payload,
+        uploadingStatus: action.submitStatus,
+      };
+    case "submit-todos":
+      return {
+        ...state,
+        todos: { ...state.todos, [action.payload.id]: action.payload },
+      };
+    case "delete-todos":
+      const { [action.id]: remove, ...rest } = state.todos;
+      return {
+        ...state,
+        todos: rest,
+        deletingStatus: action.deleteStatus,
+      };
+    case "toggle-todo":
+      return {
+        ...state,
+        todos: {
+          ...state.todos,
+          [action.id]: {
+            ...state.todos[action.id],
+            completed: !state.todos[action.id]["completed"],
+          },
         },
       };
-    default:
-      return currentTodos;
-  }
-};
-
-const todoFilteredReducer = (currentFiltered, action) => {
-  switch (action.type) {
     case "filter-completed":
-      Object.keys(action.todos).forEach((todo) => {
-        if (!action.todos[todo].completed) {
+      Object.keys(state.todos).forEach((todo) => {
+        if (!state.todos[todo].completed) {
           delete action.filtered[todo];
         }
       });
-      return action.filtered;
-
+      return { ...state, todos: state.todos, filteredTodos: action.filtered };
     case "filter-incompleted":
-      Object.keys(action.todos).forEach((todo) => {
-        if (action.todos[todo].completed) {
+      Object.keys(state.todos).forEach((todo) => {
+        if (state.todos[todo].completed) {
           delete action.filtered[todo];
         }
       });
-      return action.filtered;
-      
+      return { ...state, todos: state.todos, filteredTodos: action.filtered };
     default:
-      return action.filtered;
+      return { ...state, todos: state.todos, filteredTodos: action.filtered };
   }
 };
 
 function TodoContextProvider({ children }) {
-  // const [todos, setTodos] = useState({});
-  // const [filteredTodos, setFilteredTodos] = useState({});
-
-  const [todos, dispatch] = useReducer(todoReducer, {});
-  const [filteredTodos, dispatchFiltered] = useReducer(todoFilteredReducer, {});
+  const [
+    {
+      todos,
+      filteredTodos,
+      deletingStatus,
+      uploadingStatus,
+      selectedStatus,
+      inputText,
+    },
+    dispatch,
+  ] = useReducer(todoReducer, {
+    todos: {},
+    filteredTodos: {},
+    deletingStatus: false,
+    uploadingStatus: false,
+    selectedStatus: "all",
+    inputText: "",
+  });
 
   return (
     <TodoContext.Provider
-      value={{ todos, filteredTodos, dispatch, dispatchFiltered }}
+      value={{
+        todos,
+        filteredTodos,
+        deletingStatus,
+        uploadingStatus,
+        selectedStatus,
+        inputText,
+        dispatch,
+      }}
     >
       {children}
     </TodoContext.Provider>

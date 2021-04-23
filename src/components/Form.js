@@ -1,21 +1,17 @@
 import React, { useRef, useContext } from "react";
-// import { TodoContext } from "./TodoContext";
 
 const Form = ({
-  setInputText,
   todos,
-  // setTodos,
   inputText,
-  setStatus,
-  setUploadingStatus,
   uploadingStatus,
   dispatch,
 }) => {
-  //context
-  // const { todos, setTodos } = useContext(TodoContext);
-
   const inputTextHandler = (e) => {
-    setInputText(e.target.value);
+    dispatch({
+      type: "text-input",
+      payload: e.target.value,
+      submitStatus: true,
+    });
   };
   var timerIdRef = useRef(0);
 
@@ -26,32 +22,25 @@ const Form = ({
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      setUploadingStatus(true);
+      dispatch({ type: "text-input", payload: "", submitStatus: true });
       clearTimeout(timerIdRef.current);
       timerIdRef.current = setTimeout(() => {
-        setUploadingStatus(false);
-        setInputText("");
-
-        // setTodos((prevTodos) => {
+        dispatch({ type: "text-input", payload: "", submitStatus: false });
         const newTodo = {
           text: inputText,
           completed: false,
           id: Math.random() * 1000,
         };
-        // return {
-        //   ...prevTodos,
-        //   [newTodo.id]: newTodo,
-        // };
-
-        dispatch({ type: "submit-todos", newtodo: newTodo });
-
-        // });
+        dispatch({
+          type: "submit-todos",
+          payload: newTodo,
+        });
       }, 1000);
     }
   };
 
   const statusHandler = (e) => {
-    setStatus(e.target.value);
+    dispatch({ type: "toggle-status", payload: e.target.value });
   };
 
   return (
