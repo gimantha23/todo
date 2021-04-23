@@ -4,13 +4,14 @@ const TodoContext = createContext();
 
 const todoReducer = (state, action) => {
   switch (action.type) {
+    case "upload-status":
+      return { ...state, uploadingStatus: action.payload, };
     case "toggle-status":
       return { ...state, selectedStatus: action.payload };
     case "text-input":
       return {
         ...state,
         inputText: action.payload,
-        uploadingStatus: action.submitStatus,
       };
     case "submit-todos":
       return {

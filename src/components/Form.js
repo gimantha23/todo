@@ -1,16 +1,10 @@
 import React, { useRef, useContext } from "react";
 
-const Form = ({
-  todos,
-  inputText,
-  uploadingStatus,
-  dispatch,
-}) => {
+const Form = ({ todos, inputText, uploadingStatus, dispatch }) => {
   const inputTextHandler = (e) => {
     dispatch({
       type: "text-input",
       payload: e.target.value,
-      submitStatus: true,
     });
   };
   var timerIdRef = useRef(0);
@@ -22,10 +16,18 @@ const Form = ({
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      dispatch({ type: "text-input", payload: "", submitStatus: true });
+      dispatch({
+        type: "upload-status",
+        payload: true,
+      });
+      dispatch({ type: "text-input", payload: "" });
       clearTimeout(timerIdRef.current);
       timerIdRef.current = setTimeout(() => {
-        dispatch({ type: "text-input", payload: "", submitStatus: false });
+        dispatch({
+          type: "upload-status",
+          payload: false,
+        });
+        dispatch({ type: "text-input", payload: "" });
         const newTodo = {
           text: inputText,
           completed: false,
