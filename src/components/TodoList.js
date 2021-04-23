@@ -1,17 +1,18 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef } from "react";
 
 import Todo from "./Todo";
-import { TodoContext } from "./TodoContext";
+// import { TodoContext } from "./TodoContext";
 
 const TodoList = ({
-  // todos,
+  todos,
   // setTodos,
-  // filteredTodos,
+  filteredTodos,
   deletingStatus,
   setDeletingStatus,
+  dispatch
 }) => {
   //context
-  const { todos, setTodos, filteredTodos } = useContext(TodoContext);
+  // const { todos, setTodos, filteredTodos } = useContext(TodoContext);
 
   var deleteTimerIdRef = useRef(0);
 
@@ -21,19 +22,22 @@ const TodoList = ({
     deleteTimerIdRef.current = setTimeout(() => {
       setDeletingStatus(false);
 
-      const { [deletedTodoID]: remove, ...rest } = todos;
-      setTodos(rest);
+      // const { [deletedTodoID]: remove, ...rest } = todos;
+      // setTodos(rest);
+      dispatch({type: 'delete-todos', id: deletedTodoID, todo:todos});
     }, 1000);
   };
 
   const onCompleteHandler = (completedTodoID) => {
-    setTodos((prevState) => ({
-      ...prevState,
-      [completedTodoID]: {
-        ...todos[completedTodoID],
-        completed: !todos[completedTodoID]["completed"],
-      },
-    }));
+    // setTodos((prevState) => ({
+    //   ...prevState,
+    //   [completedTodoID]: {
+    //     ...todos[completedTodoID],
+    //     completed: !todos[completedTodoID]["completed"],
+    //   },
+    // }));
+    dispatch({type: 'complete-todos', id: completedTodoID, todo:todos});
+
   };
 
   return (
@@ -41,7 +45,7 @@ const TodoList = ({
       <ul className="todo-list">
         {Object.values(filteredTodos).map((todo) => (
           <Todo
-            setTodos={setTodos}
+            // setTodos={setTodos}
             key={todo.id}
             todo={todo}
             text={todo.text}

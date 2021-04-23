@@ -8,7 +8,9 @@ import { NavLink } from "react-router-dom";
 
 function Home() {
   //context
-  const { todos, setFilteredTodos } = useContext(TodoContext);
+  const { todos, filteredTodos, dispatch, dispatchFiltered } = useContext(
+    TodoContext
+  );
 
   const [inputText, setInputText] = useState("");
   //   const [todos, setTodos] = useState({});
@@ -21,25 +23,39 @@ function Home() {
     let filtered = { ...todos };
     switch (status) {
       case "completed":
-        Object.keys(todos).forEach((todo) => {
-          if (!todos[todo].completed) {
-            delete filtered[todo];
-          }
+        // Object.keys(todos).forEach((todo) => {
+        //   if (!todos[todo].completed) {
+        //     delete filtered[todo];
+        //   }
+        // });
+        // setFilteredTodos(filtered);
+        dispatchFiltered({
+          type: "filter-completed",
+          filtered: filtered,
+          todos: todos,
         });
-        setFilteredTodos(filtered);
         break;
 
       case "uncompleted":
-        Object.keys(todos).forEach((todo) => {
-          if (todos[todo].completed) {
-            delete filtered[todo];
-          }
+        // Object.keys(todos).forEach((todo) => {
+        //   if (todos[todo].completed) {
+        //     delete filtered[todo];
+        //   }
+        // });
+        // setFilteredTodos(filtered);
+        dispatchFiltered({
+          type: "filter-incompleted",
+          filtered: filtered,
+          todos: todos,
         });
-        setFilteredTodos(filtered);
         break;
 
       default:
-        setFilteredTodos(todos);
+        dispatchFiltered({
+          type: "filter-default",
+          filtered: filtered,
+          todos: todos,
+        });
         break;
     }
   };
@@ -86,19 +102,21 @@ function Home() {
       </header>
       <Form
         inputText={inputText}
-        // todos={todos}
+        todos={todos}
         // setTodos={setTodos}
         setInputText={setInputText}
         setStatus={setStatus}
         setUploadingStatus={setUploadingStatus}
         uploadingStatus={uploadingStatus}
+        dispatch={dispatch}
       />
       <TodoList
         // setTodos={setTodos}
-        // todos={todos}
-        // filteredTodos={filteredTodos}
+        todos={todos}
+        filteredTodos={filteredTodos}
         deletingStatus={deletingStatus}
         setDeletingStatus={setDeletingStatus}
+        dispatch={dispatch}
       />
     </div>
   );

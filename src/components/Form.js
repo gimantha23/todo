@@ -1,18 +1,18 @@
 import React, { useRef, useContext } from "react";
-import { TodoContext } from "./TodoContext";
+// import { TodoContext } from "./TodoContext";
 
 const Form = ({
   setInputText,
-  // todos,
+  todos,
   // setTodos,
   inputText,
   setStatus,
   setUploadingStatus,
   uploadingStatus,
+  dispatch,
 }) => {
   //context
-  const { todos, setTodos } = useContext(TodoContext);
-  
+  // const { todos, setTodos } = useContext(TodoContext);
 
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
@@ -32,17 +32,20 @@ const Form = ({
         setUploadingStatus(false);
         setInputText("");
 
-        setTodos((prevTodos) => {
-          const newTodo = {
-            text: inputText,
-            completed: false,
-            id: Math.random() * 1000,
-          };
-          return {
-            ...prevTodos,
-            [newTodo.id]: newTodo,
-          };
-        });
+        // setTodos((prevTodos) => {
+        const newTodo = {
+          text: inputText,
+          completed: false,
+          id: Math.random() * 1000,
+        };
+        // return {
+        //   ...prevTodos,
+        //   [newTodo.id]: newTodo,
+        // };
+
+        dispatch({ type: "submit-todos", newtodo: newTodo });
+
+        // });
       }, 1000);
     }
   };
