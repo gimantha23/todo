@@ -9,7 +9,6 @@ import "./App.css";
 
 import About from "./components/About";
 import Home from "./components/Home";
-// import {TodoContextProvider} from "./components/TodoContext";
 
 function App() {
   let routes;
@@ -28,7 +27,6 @@ function App() {
 
   return (
     <Router>
-      {/* <TodoContextProvider>{routes}</TodoContextProvider> */}
       {routes}
     </Router>
   );
