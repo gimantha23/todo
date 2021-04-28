@@ -1,11 +1,16 @@
 import React, { useRef, useContext } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { submitTodo, SetinputText, uploadStatus, toggleStatus } from '../actions';
 
-const Form = ({ todos, inputText, uploadingStatus, dispatch }) => {
+const Form = () => {
+
+  const todos = useSelector(state => state.todos);
+  const inputText = useSelector(state => state.inputText);
+  const uploadingStatus = useSelector(state => state.uploadStatus);
+  const dispatch = useDispatch();
+
   const inputTextHandler = (e) => {
-    dispatch({
-      type: "text-input",
-      payload: e.target.value,
-    });
+    dispatch(SetinputText(e.target.value)); //payload: e.target.value
   };
   var timerIdRef = useRef(0);
 
@@ -16,33 +21,23 @@ const Form = ({ todos, inputText, uploadingStatus, dispatch }) => {
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      dispatch({
-        type: "upload-status",
-        payload: true,
-      });
-      dispatch({ type: "text-input", payload: "" });
+      dispatch(uploadStatus(false)); //payload:true
+      dispatch(SetinputText("")); //payload:""
       clearTimeout(timerIdRef.current);
       timerIdRef.current = setTimeout(() => {
-        dispatch({
-          type: "upload-status",
-          payload: false,
-        });
-        dispatch({ type: "text-input", payload: "" });
+        dispatch(uploadStatus(true)); //payload : false
         const newTodo = {
           text: inputText,
           completed: false,
           id: Math.random() * 1000,
         };
-        dispatch({
-          type: "submit-todos",
-          payload: newTodo,
-        });
+        dispatch(submitTodo(newTodo)); //payload: newTodo
       }, 1000);
     }
   };
 
   const statusHandler = (e) => {
-    dispatch({ type: "toggle-status", payload: e.target.value });
+    dispatch(toggleStatus(e.target.value)); //payload: e.target.value
   };
 
   return (

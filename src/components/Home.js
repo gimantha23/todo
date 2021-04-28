@@ -3,42 +3,33 @@ import "../App.css";
 
 import Form from "./Form";
 import TodoList from "./TodoList";
-import { TodoContext } from "./TodoContext";
+// import { TodoContext } from "./TodoContext";
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { filterCompleted, filterIncompleted, filterDefault } from '../actions';
+
 
 function Home() {
-  const {
-    todos,
-    filteredTodos,
-    deletingStatus,
-    uploadingStatus,
-    selectedStatus,
-    inputText,
-    dispatch,
-  } = useContext(TodoContext);
+  const todos = useSelector(state => state.todos);
+  const filteredTodos = useSelector(state => state.filteredTodos);
+  const selectedStatus = useSelector(state => state.toggleStatus);
+  // console.log(filteredTodos)
+  const dispatch = useDispatch();
 
   const filterHandler = () => {
     let filtered = { ...todos };
+    // console.log(filtered, "FFFFFFFFFFF")
     switch (selectedStatus) {
       case "completed":
-        dispatch({
-          type: "filter-completed",
-          filtered: filtered,
-        });
+        dispatch(filterCompleted(filtered));
         break;
 
       case "uncompleted":
-        dispatch({
-          type: "filter-incompleted",
-          filtered: filtered,
-        });
+        dispatch(filterIncompleted(filtered));
         break;
 
       default:
-        dispatch({
-          type: "filter-default",
-          filtered: filtered,
-        });
+        dispatch(filterDefault(filtered));
         break;
     }
   };
@@ -54,16 +45,16 @@ function Home() {
         <h1>Gima's Todo List - Netlify</h1>
       </header>
       <Form
-        inputText={inputText}
+        // inputText={inputText}
         todos={todos}
-        uploadingStatus={uploadingStatus}
-        dispatch={dispatch}
+      // uploadingStatus={uploadingStatus}
+      // dispatch={dispatch}
       />
       <TodoList
-        todos={todos}
+        // todos={todos}
         filteredTodos={filteredTodos}
-        deletingStatus={deletingStatus}
-        dispatch={dispatch}
+      // deletingStatus={deletingStatus}
+      // dispatch={dispatch}
       />
     </div>
   );
