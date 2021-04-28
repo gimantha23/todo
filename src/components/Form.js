@@ -10,7 +10,7 @@ const Form = () => {
   const dispatch = useDispatch();
 
   const inputTextHandler = (e) => {
-    dispatch(SetinputText(e.target.value)); //payload: e.target.value
+    dispatch(SetinputText(e.target.value));
   };
   var timerIdRef = useRef(0);
 
@@ -21,23 +21,23 @@ const Form = () => {
     } else if (todos.length + 1 > 5) {
       alert("Cannot add more than 5 items");
     } else {
-      dispatch(uploadStatus(false)); //payload:true
-      dispatch(SetinputText("")); //payload:""
+      dispatch(uploadStatus(true));
+      dispatch(SetinputText(""));
       clearTimeout(timerIdRef.current);
       timerIdRef.current = setTimeout(() => {
-        dispatch(uploadStatus(true)); //payload : false
+        dispatch(uploadStatus(false));
         const newTodo = {
           text: inputText,
           completed: false,
           id: Math.random() * 1000,
         };
-        dispatch(submitTodo(newTodo)); //payload: newTodo
+        dispatch(submitTodo(newTodo));
       }, 1000);
     }
   };
 
   const statusHandler = (e) => {
-    dispatch(toggleStatus(e.target.value)); //payload: e.target.value
+    dispatch(toggleStatus(e.target.value));
   };
 
   return (

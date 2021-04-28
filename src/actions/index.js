@@ -49,6 +49,12 @@ export const uploadStatus = (st) => {
     }
 }
 
+export const deleteStatus = (st) => {
+    return {
+        type: "delete-status",
+        payload: st
+    }
+}
 
 export const toggleStatus = (val) => {
     return {

@@ -1,29 +1,27 @@
 import React, { useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
 import Todo from "./Todo";
-import { toggleTodo, deleteTodos } from '../actions';
+import { toggleTodo, deleteTodos, deleteStatus } from "../actions";
 
-const TodoList = ({
-  deletingStatus,
-}) => {
+const TodoList = () => {
   var deleteTimerIdRef = useRef(0);
 
-  const filteredTodos = useSelector(state => state.filteredTodos);
-  const todos = useSelector(state => state.todos);
+  const filteredTodos = useSelector((state) => state.filteredTodos);
+  const deletingStatus = useSelector((state) => state.deleteStatus);
   const dispatch = useDispatch();
-  console.log(todos, "PPPPPPPPPPPP")
 
   const onDeleteHandler = (deletedTodoID) => {
-    dispatch(deleteTodos(null, true)); //id:null, deleteStatus: true
+    dispatch(deleteStatus(true));
     clearTimeout(deleteTimerIdRef.current);
     deleteTimerIdRef.current = setTimeout(() => {
-      dispatch(deleteTodos(deletedTodoID)); //id:deletedTodoID, deleteStatus: false
+      dispatch(deleteStatus(false));
+      dispatch(deleteTodos(deletedTodoID));
     }, 1000);
   };
 
   const onCompleteHandler = (toggledTodoID) => {
-    dispatch(toggleTodo(toggledTodoID)); //id:toggledTodoID
+    dispatch(toggleTodo(toggledTodoID));
   };
 
   return (
