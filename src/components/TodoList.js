@@ -2,11 +2,10 @@ import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Todo from "./Todo";
-import { toggleTodo, deleteTodos, deleteStatus } from "../actions";
+import { toggleTodo, deleteTodos, deleteStatus } from "../reducers";
 
 const TodoList = () => {
   var deleteTimerIdRef = useRef(0);
-
   const filteredTodos = useSelector((state) => state.filteredTodos);
   const deletingStatus = useSelector((state) => state.deleteStatus);
   const dispatch = useDispatch();

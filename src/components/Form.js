@@ -1,6 +1,6 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { submitTodo, SetinputText, uploadStatus, toggleStatus } from '../actions';
+import { submitTodo, SetinputText, uploadStatus, toggleStatus } from '../reducers';
 
 const Form = () => {
 

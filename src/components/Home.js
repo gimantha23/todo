@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 
 import Form from "./Form";
 import TodoList from "./TodoList";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { filterCompleted, filterIncompleted, filterDefault } from '../actions';
+import { filterCompleted, filterIncompleted, filterDefault } from '../reducers';
 
 
 function Home() {
@@ -15,18 +15,17 @@ function Home() {
   const dispatch = useDispatch();
 
   const filterHandler = () => {
-    let filtered = { ...todos };
     switch (selectedStatus) {
       case "completed":
-        dispatch(filterCompleted(filtered));
+        dispatch(filterCompleted());
         break;
 
       case "uncompleted":
-        dispatch(filterIncompleted(filtered));
+        dispatch(filterIncompleted());
         break;
 
       default:
-        dispatch(filterDefault(filtered));
+        dispatch(filterDefault());
         break;
     }
   };
