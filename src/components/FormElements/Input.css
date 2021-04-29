@@ -1,0 +1,10 @@
+/* .form-control1--invalid label,
+.form-control1--invalid p {
+  color: red;
+}
+
+.form-control1--invalid input,
+.form-control1--invalid textarea {
+  border-color: red;
+  background: #ffd1d1;
+} */

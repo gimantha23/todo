@@ -37,6 +37,7 @@ function Home() {
   return (
     <div className="App">
       <NavLink to="/about">About</NavLink>
+      <NavLink to="/contact-us">Contact us</NavLink>
       <header>
         <h1>Gima's Todo List - Netlify</h1>
       </header>

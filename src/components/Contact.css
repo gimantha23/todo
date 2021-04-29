@@ -1,0 +1,30 @@
+.contact-form {
+  display: block !important;
+  font-size: 12px !important;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 70%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  background-color: gray;
+}
+
+.form-item {
+  display: block !important;
+  font-size: 15px;
+  width: 50%;
+  margin: auto;
+}
+
+.complete-btn{
+  display: block;
+  margin: auto;
+}
+
+.Error-text{
+  color: red;
+  font-size: 17px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

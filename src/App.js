@@ -9,6 +9,7 @@ import "./App.css";
 
 import About from "./components/About";
 import Home from "./components/Home";
+import Contact from './components/Contact';
 
 function App() {
   let routes;
@@ -21,15 +22,14 @@ function App() {
       <Route path="/about">
         <About />
       </Route>
+      <Route path="/contact-us">
+        <Contact />
+      </Route>
       <Redirect to="/todo" />
     </Switch>
   );
 
-  return (
-    <Router>
-      {routes}
-    </Router>
-  );
+  return <Router>{routes}</Router>;
 }
 
 export default App;
