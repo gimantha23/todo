@@ -1,74 +1,99 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, useField } from "formik";
+import * as Yup from "yup";
 import "./Contact.css";
 
-var errorMsg;
 const Contact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [message, setMessage] = useState("");
+  //   const [name, setName] = useState("");
+  //   const [email, setEmail] = useState("");
+  //   const [isValidEmail, setIsValidEmail] = useState(true);
+  //   const [message, setMessage] = useState("");
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    console.log(name, email, message);
+  const MyTextInput = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+      <>
+        <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+        <input className="text-input" {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <div className="Error-text">{meta.error}</div>
+        ) : null}
+      </>
+    );
   };
 
-  const emailValidatorHandler = (evt) => {
-    if (evt.target.value === "") {
-      setIsValidEmail(false);
-      errorMsg = "Email cannot be empty";
-    } else if (!/\S+@\S+\.\S+/.test(evt.target.value)) {
-      setIsValidEmail(false);
-      errorMsg = "Email is invalid";
-    } else {
-      setIsValidEmail(true);
-    }
+  const MyTextArea = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+      <>
+        <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
+        <textarea className="text-area" {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <div className="Error-text">{meta.error}</div>
+        ) : null}
+      </>
+    );
   };
 
+  const SignupForm = () => {
+    return (
+      <>
+        <Formik
+          initialValues={{
+            firstName: "",
+            email: "",
+            message: "",
+          }}
+          validationSchema={Yup.object({
+            firstName: Yup.string().required("Required"),
+            email: Yup.string()
+              .email("Invalid email addresss`")
+              .required("Required"),
+          })}
+          onSubmit={async (values, { setSubmitting }) => {
+            console.log(values);
+            await new Promise((r) => setTimeout(r, 500));
+            setSubmitting(false);
+          }}
+        >
+          <Form className="contact-form">
+            <MyTextInput
+              className="form-item"
+              label="First Name"
+              name="firstName"
+              type="text"
+              placeholder="Jane"
+            />
+            <MyTextInput
+              className="form-item"
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="jane@formik.com"
+            />
+            <MyTextArea
+              className="form-item"
+              label="Message"
+              name="message"
+              rows="6"
+              placeholder="type here..."
+            />
+            <br />
+            <button type="submit" className="complete-btn">
+              Submit
+            </button>
+          </Form>
+        </Formik>
+      </>
+    );
+  };
   return (
     <>
       <header>
         <h1>Contact Us</h1>
       </header>
 
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <input
-          id="name"
-          type="text"
-          className="form-item"
-          onInput={(e) => setName(e.target.value)}
-          placeholder="Your name.."
-        />
-        <br />
-
-        <div>
-          <input
-            id="email"
-            type="email"
-            className="form-item"
-            onInput={(e) => setEmail(e.target.value)}
-            onChange={emailValidatorHandler}
-            placeholder="Your email.."
-          />
-          {!isValidEmail && <p className="Error-text">{errorMsg}</p>}
-        </div>
-        <br />
-
-        <textarea
-          id="message"
-          rows="5"
-          onInput={(e) => setMessage(e.target.value)}
-          className="form-item"
-          placeholder="Message.."
-        />
-        <br />
-
-        <input
-          className="complete-btn"
-          type="submit"
-          disabled={!isValidEmail}
-        />
-      </form>
+      <SignupForm />
     </>
   );
 };

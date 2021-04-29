@@ -16,6 +16,9 @@
   margin: auto;
 }
 
+.form-label {
+  font-size: 19px !important;
+}
 .complete-btn{
   display: block;
   margin: auto;
