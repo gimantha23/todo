@@ -13,11 +13,12 @@
   display: block !important;
   font-size: 15px;
   width: 50%;
-  margin: auto;
+  margin: auto !important;
 }
 
 .form-label {
   font-size: 19px !important;
+  margin: auto !important;
 }
 .complete-btn{
   display: block;

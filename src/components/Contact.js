@@ -1,6 +1,7 @@
 import React from "react";
-import { Formik, Form, useField } from "formik";
-import * as Yup from "yup";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { Button, TextField } from "@material-ui/core";
 import "./Contact.css";
 
 const Contact = () => {
@@ -9,91 +10,75 @@ const Contact = () => {
   //   const [isValidEmail, setIsValidEmail] = useState(true);
   //   const [message, setMessage] = useState("");
 
-  const MyTextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
+  const validationSchema = yup.object({
+    name: yup.string("Enter your Name"),
+    email: yup
+      .string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required"),
+  });
+
+  const WithMaterialUI = () => {
+    const formik = useFormik({
+      initialValues: {
+        name: "",
+        email: "",
+        message: "",
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        console.log(JSON.stringify(values, null, 2));
+      },
+    });
+
     return (
-      <>
-        <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
-        <input className="text-input" {...field} {...props} />
-        {meta.touched && meta.error ? (
-          <div className="Error-text">{meta.error}</div>
-        ) : null}
-      </>
+      <div>
+        <form className="contact-form" onSubmit={formik.handleSubmit}>
+          <TextField
+            fullWidth
+            id="name"
+            name="name"
+            label="Name"
+            type="text"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+          />
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            fullWidth
+            id="message"
+            name="message"
+            label="Message"
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            error={formik.touched.message && Boolean(formik.errors.message)}
+            helperText={formik.touched.message && formik.errors.message}
+          />
+          <Button color="primary" variant="contained" fullWidth type="submit">
+            Submit
+          </Button>
+        </form>
+      </div>
     );
   };
 
-  const MyTextArea = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-      <>
-        <label className="form-label" htmlFor={props.id || props.name}>{label}</label>
-        <textarea className="text-area" {...field} {...props} />
-        {meta.touched && meta.error ? (
-          <div className="Error-text">{meta.error}</div>
-        ) : null}
-      </>
-    );
-  };
-
-  const SignupForm = () => {
-    return (
-      <>
-        <Formik
-          initialValues={{
-            firstName: "",
-            email: "",
-            message: "",
-          }}
-          validationSchema={Yup.object({
-            firstName: Yup.string().required("Required"),
-            email: Yup.string()
-              .email("Invalid email addresss`")
-              .required("Required"),
-          })}
-          onSubmit={async (values, { setSubmitting }) => {
-            console.log(values);
-            await new Promise((r) => setTimeout(r, 500));
-            setSubmitting(false);
-          }}
-        >
-          <Form className="contact-form">
-            <MyTextInput
-              className="form-item"
-              label="First Name"
-              name="firstName"
-              type="text"
-              placeholder="Jane"
-            />
-            <MyTextInput
-              className="form-item"
-              label="Email Address"
-              name="email"
-              type="email"
-              placeholder="jane@formik.com"
-            />
-            <MyTextArea
-              className="form-item"
-              label="Message"
-              name="message"
-              rows="6"
-              placeholder="type here..."
-            />
-            <br />
-            <button type="submit" className="complete-btn">
-              Submit
-            </button>
-          </Form>
-        </Formik>
-      </>
-    );
-  };
   return (
     <>
       <header>
         <h1>Contact Us</h1>
       </header>
-
-      <SignupForm />
+      <WithMaterialUI />
     </>
   );
 };
